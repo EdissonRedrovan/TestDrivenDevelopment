@@ -27,7 +27,7 @@ public class TransferServiceTest {
         Response response =  transferService.transfer(request);
 
         assertEquals(200, response.getStatus());
-        assertEquals("Transferencia exitosa", (response.getEntity().toString()));
+        assertEquals("Transferencia exitosa", ((TransferResponse) response.getEntity()).getMessage());
 
     }
 

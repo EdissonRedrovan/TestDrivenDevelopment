@@ -28,6 +28,6 @@ public class BankTransferService implements TransferService{
         accounts.put(request.getRecipientAccount(), accounts.getOrDefault(request.getRecipientAccount(), 0.0) + request.getAmount());
 
 
-        return Response.ok("Transferencia exitosa").build();
+        return Response.ok(new TransferResponse("Transferencia exitosa")).build();
     }
 }
