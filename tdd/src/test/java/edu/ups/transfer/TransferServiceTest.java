@@ -31,5 +31,23 @@ public class TransferServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Failure transfer due to insufficient funds in the account")
+    public void testTransferFailureDueToInsufficientFunds() {
+
+        //Datos
+        TransferRequest request = new TransferRequest();
+        request.setSenderAccount("12345");  // Cuenta de origen con saldo $1000
+        request.setRecipientAccount("67890"); // Cuenta de destino
+        request.setAmount(1500.0);  // Monto a transferir que excede el saldo disponible
+        request.setDescription("Pago de servicios");
+
+        Response response = transferService.transfer(request);
+
+        // Comprobamos que la respuesta sea un error debido a fondos insuficientes
+        assertEquals(400, response.getStatus());  // Esperamos que la respuesta sea 400
+        assertEquals("Transacción fallida: Fondos insuficientes", ((TransferResponse) response.getEntity()).getMessage());
+    }
+
 
 }
