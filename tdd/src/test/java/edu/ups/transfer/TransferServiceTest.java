@@ -74,6 +74,27 @@ public class TransferServiceTest {
                 .body("message", equalTo("Transferencia exitosa"));  // Verificamos el mensaje
     }
 
+    @Test
+    @DisplayName("Failure transfer due to insufficient funds in the account - Api Rest")
+    public void testTransferFailureDueToInsufficientFundsController() {
+        //Datos
+        TransferRequest request = new TransferRequest();
+        request.setSenderAccount("12345");
+        request.setRecipientAccount("67890");
+        request.setAmount(1500.0);
+        request.setDescription("Pago de servicios");
+
+        //Solicitud POST al endpoint del controlador y verificar la respuesta
+        given()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post("/transfer")
+                .then()
+                .statusCode(400)
+                .body("message", equalTo("Transacción fallida: Fondos insuficientes"));  // Verificamos el mensaje
+    }
+
 
 
 }
