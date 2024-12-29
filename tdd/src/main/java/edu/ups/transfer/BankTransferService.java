@@ -23,6 +23,11 @@ public class BankTransferService implements TransferService{
 
         double senderBalance = accounts.getOrDefault(request.getSenderAccount(), 0.0);
 
+        if (senderBalance < request.getAmount()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new TransferResponse("Transacción fallida: Fondos insuficientes"))
+                    .build();
+        }
 
         accounts.put(request.getSenderAccount(), senderBalance - request.getAmount());
         accounts.put(request.getRecipientAccount(), accounts.getOrDefault(request.getRecipientAccount(), 0.0) + request.getAmount());
